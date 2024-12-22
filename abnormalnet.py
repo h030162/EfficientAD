@@ -237,18 +237,6 @@ def train():
             save_dict["best_loss"] = best_loss
             pickle.dump(save_dict, open(os.path.join(config.output_dir, 'best.pkl'), 'wb'))
 
-            # f = open(os.path.join(config.output_dir, 'q_params.json'), 'w')
-            # f.write(json.dumps(save_dict))
-            # f.close()
-
-            # print(q_st_start, q_st_end, q_ae_start, q_ae_end)
-            # print(teacher_mean)
-            # print(teacher_std)
-
-            # torch.save(teacher, os.path.join(config.output_dir, 'teacher.pth'))
-            # torch.save(student, os.path.join(config.output_dir, 'student_best.pth'))
-            # torch.save(autoencoder, os.path.join(config.output_dir, 'autoencoder_best.pth'))
-
 def test(test_set, teacher, student, autoencoder, teacher_mean, teacher_std,
          q_st_start, q_st_end, q_ae_start, q_ae_end, test_output_dir=None,
          desc='inference'):
@@ -270,30 +258,6 @@ def test(test_set, teacher, student, autoencoder, teacher_mean, teacher_std,
         map_combined = torch.nn.functional.interpolate(
             map_combined, (orig_height, orig_width), mode='bilinear')
         map_combined = map_combined[0, 0].cpu().numpy()
-
-        # opencv_map = copy.deepcopy(map_combined)        
-        # opencv_map[opencv_map < 0] = 0
-        # opencv_map[opencv_map > 1] = 1
-        # opencv_map = (opencv_map * 255).astype(np.uint8)
-
-        #print(map_combined.shape, map_combined.min(), map_combined.max(), map_combined.dtype)
-
-        # pil_image = Image.fromarray(map_combined)
-        # pil_image.save("test.png")
-
-        #cv2.imwrite("test.png", map_combined_scaled)
-
-
-
-
-        #print(map_combined.shape, map_combined.min(), map_combined.max(), map_combined.dtype)
-        #cv2.convert
-
-        #print("===debug test map_combined2:", map_combined.shape)
-
-        # resize_map = cv2.resize(map_combined_scaled, (256, 256))
-        # cv2.imshow("resize_map", resize_map)
-        # cv2.waitKey(0)
 
         defect_class = os.path.basename(os.path.dirname(path))
         if test_output_dir is not None:
@@ -371,7 +335,6 @@ def single_test():
     weights_path = os.path.join(config.output_dir, 'best.pkl')
     if os.path.exists(weights_path):
         save_dict = pickle.load(open(weights_path, 'rb'))
-        #print(save_dict.keys())
         q_st_start = save_dict["q_st_start"]
         q_st_end = save_dict["q_st_end"]
         q_ae_start = save_dict["q_ae_start"]
@@ -423,15 +386,10 @@ def single_test():
         cv_map = (cv_map * 255).astype(np.uint8)
         cv_map_threshold = cv2.threshold(cv_map, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
         cv2.imwrite(f"map_{basename}", cv_map_threshold)
-        #cv2.imshow("map_combined", map_combined)
         cv_source = cv2.resize(cv_source, (map_combined.shape[1], map_combined.shape[0]))
-        #cv2.imshow("source", cv_source)
         cv_combine = copy.deepcopy(cv_source)
         cv_combine[:,:,2][cv_map_threshold == 255]=255
         cv2.imwrite(f"combine_{basename}", cv_combine)
-        #cv2.waitKey(0)
-
-
 
 if __name__ == '__main__':
     if config.type == 'train':

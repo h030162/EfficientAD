@@ -25,6 +25,6 @@ python abnormalnet.py --type auc
 ```
 python abnormalnet.py --type test -i data/test/crack/001.png
 ```
-<img src="001.png" alt="" width="33%" />
-<img src="map_001.png" alt="" width="33%" />
-<img src="combine_001.png" alt="" width="33%" />
+<img src="001.png" alt="" width="30%" />
+<img src="map_001.png" alt="" width="30%" />
+<img src="combine_001.png" alt="" width="30%" />
