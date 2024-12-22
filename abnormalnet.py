@@ -427,8 +427,7 @@ def single_test():
         cv_source = cv2.resize(cv_source, (map_combined.shape[1], map_combined.shape[0]))
         #cv2.imshow("source", cv_source)
         cv_combine = copy.deepcopy(cv_source)
-        cv_combine[:,:,0] = cv_combine[:,:,0] + cv_map_threshold
-        cv_combine[:,:,0][cv_map_threshold == 255]=255
+        cv_combine[:,:,2][cv_map_threshold == 255]=255
         cv2.imwrite(f"combine_{basename}", cv_combine)
         #cv2.waitKey(0)
 
