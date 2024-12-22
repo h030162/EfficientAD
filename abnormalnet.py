@@ -203,7 +203,7 @@ def train():
             scheduler.step()
 
             train_total_losss += loss_total.item()
-            trainbar.set_description(f"epoch {epoch},current batch loss {loss_total.item():.6f}, total loss: {train_total_losss:.6f}, best loss: {best_loss:.6f}, best epoch: {best_epoch}, lr: {lr:.6f}")
+            trainbar.set_description(f"epoch {epoch+1}/{config.epochs},current batch loss {loss_total.item():.6f}, total loss: {train_total_losss:.6f}, best loss: {best_loss:.6f}, best epoch: {best_epoch}, lr: {lr:.6f}")
 
         if train_total_losss < best_loss:
             best_loss = train_total_losss
